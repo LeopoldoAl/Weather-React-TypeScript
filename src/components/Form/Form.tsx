@@ -5,7 +5,7 @@ import type { SearchType } from "../../types";
 import Alert from "../Alert/Alert";
 
 type FormProps = {
-    fetchWheather: () => void
+    fetchWheather: (search: SearchType) => Promise<void>
 }
 
 export default function Form({fetchWheather}: FormProps) {
@@ -34,7 +34,7 @@ export default function Form({fetchWheather}: FormProps) {
             
         }
 
-        fetchWheather()
+        fetchWheather(search)
     }
 
 
