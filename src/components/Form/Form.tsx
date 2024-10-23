@@ -4,7 +4,11 @@ import styles from './Form.module.css'
 import type { SearchType } from "../../types";
 import Alert from "../Alert/Alert";
 
-export default function Form() {
+type FormProps = {
+    fetchWheather: () => void
+}
+
+export default function Form({fetchWheather}: FormProps) {
 
     const [search, setSearch] = useState<SearchType>({
         city: '',
@@ -29,6 +33,8 @@ export default function Form() {
         } else {
             
         }
+
+        fetchWheather()
     }
 
 
