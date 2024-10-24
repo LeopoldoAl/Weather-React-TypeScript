@@ -1,17 +1,18 @@
 import axios from "axios"
-import { z } from 'zod'
+import { object, string, number, InferOutput, parse } from 'valibot'
 import { SearchType } from "../types"
 
-const Weather = z.object({
-  name: z.string(),
-  main: z.object({
-      temp: z.number(),
-  temp_max: z.number(),
-  temp_min: z.number()
+//Valibot
+const weatherSchema = object({
+  name: string(),
+  main: object({
+    temp: number(),
+    temp_max: number(),
+    temp_min: number()
   })
 })
 
-type Weather = z.infer<typeof Weather>
+type Weather =InferOutput<typeof weatherSchema>
 
 export default function useWheather() {
     const fetchWheather = async (search: SearchType) => {
@@ -26,15 +27,12 @@ export default function useWheather() {
 
             const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${appId}`
 
-            const { data: weatherResult } = await axios(weatherUrl)
+            const { data: weatherResult } = await axios<Weather>(weatherUrl)
 
-            const result = Weather.safeParse(weatherResult)
+            const result = parse(weatherSchema, weatherResult)
 
-            if (result.success) {
-              console.log(result.data.name)
-              console.log(result.data.main.temp)
-            } else {
-              console.log('nothing')
+            if (result) {
+              console.log(result.name)
             }
 
             
