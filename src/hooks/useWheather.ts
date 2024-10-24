@@ -1,6 +1,7 @@
 import axios from "axios"
 import { object, string, number, InferOutput, parse } from 'valibot'
 import { SearchType } from "../types"
+import { useState } from "react"
 
 //Valibot
 const weatherSchema = object({
@@ -12,9 +13,18 @@ const weatherSchema = object({
   })
 })
 
-type Weather =InferOutput<typeof weatherSchema>
+export type Weather =InferOutput<typeof weatherSchema>
 
 export default function useWheather() {
+
+            const [weather, setWeather] = useState<Weather>({
+              name: '',
+              main: {
+                temp: 0,
+                temp_max: 0,
+                temp_min: 0
+              }
+            })
     const fetchWheather = async (search: SearchType) => {
         try {
             const appId = import.meta.env.VITE_API_KEY
@@ -27,12 +37,12 @@ export default function useWheather() {
 
             const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${appId}`
 
-            const { data: weatherResult } = await axios<Weather>(weatherUrl)
+            const { data: weatherResult } = await axios(weatherUrl)
 
             const result = parse(weatherSchema, weatherResult)
 
             if (result) {
-              console.log(result.name)
+              setWeather(result)
             }
 
             
@@ -41,6 +51,7 @@ export default function useWheather() {
         }
     }
   return {
+    weather,
     fetchWheather
   }
 }
