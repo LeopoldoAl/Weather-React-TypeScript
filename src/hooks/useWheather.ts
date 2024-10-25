@@ -25,9 +25,13 @@ export default function useWheather() {
                 temp_min: 0
               }
             })
+
+            const [loading, setLoading] = useState(false)
+
     const fetchWheather = async (search: SearchType) => {
+      const appId = import.meta.env.VITE_API_KEY
+      setLoading(true)
         try {
-            const appId = import.meta.env.VITE_API_KEY
             const geoUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${search.city},${search.country}&appid=${appId}`
 
             const { data } = await axios(geoUrl)
@@ -48,12 +52,15 @@ export default function useWheather() {
             
         } catch (error) {
             console.log(error)
+        } finally {
+          setLoading(false)
         }
     }
 
     const hasWeather = useMemo(() => weather.name,[weather])
   return {
     weather,
+    loading,
     fetchWheather,
     hasWeather
   }
