@@ -31,7 +31,7 @@ export default function Form({fetchWheather}: FormProps) {
             setAlert('All of the fields are required!')
             return
         } else {
-            
+            setAlert('')
         }
 
         fetchWheather(search)
