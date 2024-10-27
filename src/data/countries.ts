@@ -1,12 +1,13 @@
 import type { Country } from "../types";
 
 export const countries: Country[] = [
-    { code: 'US', name: 'Estados Unidos' },
-    { code: 'MX', name: 'México' },
+    { code: 'US', name: 'United States' },
+    { code: 'CA	', name: 'Canada' },
+    { code: 'MX', name: 'Mexico' },
     { code: 'AR', name: 'Argentina' },
     { code: 'CO', name: 'Colombia' },
     { code: 'CR', name: 'Costa Rica' },
-    { code: 'ES', name: 'España' },
-    { code: 'PE', name: 'Perú' },
-    { code: 'RD', name: 'Dominican Republic' }
+    { code: 'ES', name: 'Spain' },
+    { code: 'PE', name: 'Peru' },
+    { code: 'DO', name: 'Dominican Republic' }
   ]
