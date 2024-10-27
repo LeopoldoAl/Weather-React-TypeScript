@@ -30,34 +30,41 @@ export default function useWheather() {
 
             const [loading, setLoading] = useState(false)
 
+            const [notfound, setNotfound] = useState(false)
+
     const fetchWheather = async (search: SearchType) => {
       const appId = import.meta.env.VITE_API_KEY
       setLoading(true)
       setWeather(initialState)
+      setNotfound(false)
         try {
             const geoUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${search.city},${search.country}&appid=${appId}`
 
             const { data } = await axios(geoUrl)
             
             if(!data[0]) {
-              setWeather(initialState)
+              setNotfound(true)
               return
             }
+            
             if (data[0].name.trim()===search.city.trim() && data[0].country.trim()===search.country.trim()) {
               const lat = data[0].lat
               const lon = data[0].lon
-  
+              
               const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${appId}`
   
               const { data: weatherResult } = await axios(weatherUrl)
   
               const result = parse(weatherSchema, weatherResult)
-  
-              if (result) {
+              
+              if (result && result.name.trim()===search.city.trim()) {
                 setWeather(result)
             } else {
               setWeather(initialState)
+              setNotfound(true)
             }
+            } else {
+              setNotfound(true)
             }
 
             
@@ -72,6 +79,7 @@ export default function useWheather() {
   return {
     weather,
     loading,
+    notfound,
     fetchWheather,
     hasWeather
   }
