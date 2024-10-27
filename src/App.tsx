@@ -1,4 +1,5 @@
 import styles from "./App.module.css"
+import Alert from "./components/Alert/Alert"
 import Form from "./components/Form/Form"
 import Spinner from "./components/Spinner/Spinner"
 import WeatherDetails from "./components/WeatherDetails/WeatherDetails"
@@ -6,7 +7,7 @@ import useWheather from "./hooks/useWheather"
 
 function App() {
 
-  const { weather, loading, fetchWheather, hasWeather } = useWheather()
+  const { weather, loading, notfound, fetchWheather, hasWeather } = useWheather()
 
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
         />
         {loading && <Spinner />}
         {hasWeather && <WeatherDetails weather={weather}/>}
+        {notfound && <Alert>City doesn't find</Alert>}
       </div>
     </>
   )
